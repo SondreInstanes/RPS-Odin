@@ -9,3 +9,5 @@ V1: Pretty happy with result.\
         getRandom(min, max) {\
             return Math.floor(Math.random() * (max - min + 1) + min);\
         }\
+        
+NOTE AFTER PUSH: getComputerChoice() could be removed, just use getRandom() and interpret numbers directly in playRound()
