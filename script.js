@@ -1,6 +1,24 @@
+const buttons = document.querySelector('#buttons');
+const rock = document.querySelector('#rock');
+const paper = document.querySelector('#paper');
+const scissors = document.querySelector('#scissors');
+const outcome = document.querySelector('.outcome');
+const score = document.querySelector('.score');
+
+// bool to disable playRound when either player reaches 5 points
+let enabled = true;
+
+let playerScore = 0;
+let computerScore = 0;
+
+score.innerText = `\n-SCORE-\n Player: ${playerScore}\n Computer: ${computerScore}`;
+
+function updateScore() {
+    score.innerText = `\n-SCORE-\n Player: ${playerScore}\n Computer: ${computerScore}`;
+}
+
 // Random between two numbers
-// This function pretty much works like Random.Next() from C#, exept maxvalue is 
-// inclusive
+// This function pretty much works like Random.Next() from C#, exept maxvalue is inclusive
 // For RPS the formula is: random number * 3, rounded down to nearest INT
 function getRandom(min, max)
 {
@@ -26,39 +44,106 @@ function getComputerChoice() {
 
 // Play a round by comparing playerselection to computerselection
 function playRound(playerSelection, computerSelection) {
-    let outCome;
+    if (!enabled) return;
     if (playerSelection == "rock") {
         if (computerSelection == "rock") {
-            outCome = "Rock vs rock. It's a tie!";
+            const p = document.createElement('p');
+            p.innerText = "Rock vs rock. It's a tie!";
+            outcome.appendChild(p);
         } else if (computerSelection == "paper") {
-            outCome = "Rock loses to paper (somehow). You lose!";
+            const p = document.createElement('p');
+            p.innerText = "Rock loses to paper (somehow). You lose!";
+            computerScore++;
+            updateScore();
+            outcome.appendChild(p);
         } else {
-            outCome = "Rock beats scissors. You win!";
+            const p = document.createElement('p');
+            p.innerText = "Rock beats scissors. You win!";
+            playerScore++;
+            updateScore();
+            outcome.appendChild(p);
         }
     } else if (playerSelection == "paper") {
         if (computerSelection == "rock") {
-            outCome = "Paper beats rock (somehow). You win!";
+            const p = document.createElement('p');
+            p.innerText = "Paper beats rock (somehow). You win!";
+            playerScore++;
+            updateScore();
+            outcome.appendChild(p);
         } else if (computerSelection == "paper") {
-            outCome = "Paper vs paper. It's a tie!";
+            const p = document.createElement('p');
+            p.innerText = "Paper vs paper. It's a tie!";
+            outcome.appendChild(p);
         } else {
-            outCome = "Paper loses to scissors. You lose!";
+            const p = document.createElement('p');
+            p.innerText = "Paper loses to scissors. You lose!";
+            computerScore++;
+            updateScore();
+            outcome.appendChild(p);
         }
     } else if (playerSelection == "scissors") {
         if (computerSelection == "rock") {
-            outCome = "Scissors loses to rock. You lose!";
+            const p = document.createElement('p');
+            p.innerText = "Scissors loses to rock. You lose!";
+            computerScore++;
+            updateScore();
+            outcome.appendChild(p);
         } else if (computerSelection == "paper") {
-            outCome = "Scissors beats paper. You win!";
+            const p = document.createElement('p');
+            p.innerText = "Scissors beats paper. You win!";
+            playerScore++;
+            updateScore();
+            outcome.appendChild(p);
         } else {
-            outCome = "Scissors vs scissors. It's a tie!";
+            const p = document.createElement('p');
+            p.innerText = "Scissors vs scissors. It's a tie!";
+            outcome.appendChild(p);
         }
-    } else {
-        outCome = playerSelection + " is not a valid choice. You can use rock, paper or scissors.";
+    } 
+
+    if(playerScore === 5) {
+        const p = document.createElement('p');
+        p.innerText = "You got five points! You win!\n Refresh to retry";
+        p.setAttribute('style', 'background: green;');
+        outcome.appendChild(p);
+        enabled = false;
+
+    } else if (computerScore === 5) {
+        const p = document.createElement('p');
+        p.innerText = "The computer got five points! You Lose!\n Refresh to retry";
+        p.setAttribute('style', 'background: red;');
+        outcome.appendChild(p);
+        enabled = false;
     }
-    
-    return outCome;
 }
 
-// Five rounds of RPS
+// Rock
+rock.addEventListener('click', () => {
+    const computerSelection = getComputerChoice();
+    const playerSelection = "rock";
+    playRound(playerSelection, computerSelection);
+});
+
+// Paper
+paper.addEventListener('click', () => {
+    const computerSelection = getComputerChoice();
+    const playerSelection = "paper";
+    playRound(playerSelection, computerSelection);
+});
+
+// Scissors
+scissors.addEventListener('click', () => {
+    const computerSelection = getComputerChoice();
+    const playerSelection = "scissors";
+    playRound(playerSelection, computerSelection);
+});
+
+
+
+
+
+// Five rounds of RPS for earlier console version, now useless
+/*
 function game()
 {
     let playerScore = 0;
@@ -105,5 +190,4 @@ function game()
         console.log("It's a tie!")
     }
 }
-
-game();
+*/
